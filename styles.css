@@ -6,7 +6,7 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #0d1117;
     min-height: 100vh;
     padding: 20px;
     display: flex;
@@ -15,175 +15,214 @@ body {
 }
 
 .container {
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
     padding: 40px;
-    max-width: 800px;
+    max-width: 900px;
     width: 100%;
 }
 
 h1 {
-    color: #333;
-    margin-bottom: 10px;
-    font-size: 2em;
+    color: #f0f6fc;
+    margin-bottom: 8px;
+    font-size: 2.2em;
     text-align: center;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 .subtitle {
-    color: #666;
+    color: #8b949e;
     text-align: center;
-    margin-bottom: 30px;
-    font-size: 0.95em;
+    margin-bottom: 35px;
+    font-size: 1em;
+    font-weight: 400;
 }
 
 .input-section, .output-section {
-    margin-bottom: 25px;
+    margin-bottom: 28px;
 }
 
 label {
     display: block;
-    color: #333;
+    color: #f0f6fc;
     font-weight: 600;
-    margin-bottom: 8px;
-    font-size: 1.1em;
+    margin-bottom: 10px;
+    font-size: 0.95em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 textarea {
     width: 100%;
-    padding: 15px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-family: 'Courier New', monospace;
-    font-size: 14px;
+    padding: 16px;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace;
+    font-size: 13px;
     resize: vertical;
-    transition: border-color 0.3s;
+    transition: all 0.2s ease;
+    background: #0d1117;
+    color: #f0f6fc;
 }
 
 textarea:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #58a6ff;
+    box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
 }
 
 #input {
-    min-height: 150px;
+    min-height: 160px;
 }
 
 #output {
-    min-height: 150px;
-    background-color: #f8f9fa;
+    min-height: 160px;
+    background-color: #0d1117;
 }
 
 .button-group {
     display: flex;
-    gap: 10px;
-    margin-top: 15px;
+    gap: 12px;
+    margin-top: 18px;
 }
 
 button {
     flex: 1;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
+    padding: 12px 20px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.2s ease;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: #238636;
+    color: #ffffff;
+    border-color: rgba(240, 246, 252, 0.1);
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    background: #2ea043;
+    box-shadow: 0 4px 12px rgba(35, 134, 54, 0.3);
+}
+
+.btn-primary:active {
+    background: #26a641;
+    transform: translateY(1px);
 }
 
 .btn-secondary {
-    background: #6c757d;
-    color: white;
+    background: #21262d;
+    color: #f0f6fc;
+    border-color: #30363d;
 }
 
 .btn-secondary:hover {
-    background: #5a6268;
+    background: #30363d;
+    border-color: #8b949e;
 }
 
 .btn-success {
-    background: #28a745;
-    color: white;
+    background: #1f6feb;
+    color: #ffffff;
 }
 
 .btn-success:hover {
-    background: #218838;
+    background: #388bfd;
+    box-shadow: 0 4px 12px rgba(31, 111, 235, 0.3);
+}
+
+.btn-success:active {
+    background: #0969da;
+    transform: translateY(1px);
 }
 
 .info-box {
-    background: #e7f3ff;
-    border-left: 4px solid #2196F3;
-    padding: 15px;
-    margin-bottom: 25px;
-    border-radius: 4px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-left: 3px solid #58a6ff;
+    padding: 18px;
+    margin-bottom: 30px;
+    border-radius: 6px;
 }
 
 .info-box h3 {
-    color: #1976D2;
-    margin-bottom: 8px;
-    font-size: 1em;
+    color: #58a6ff;
+    margin-bottom: 12px;
+    font-size: 0.95em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .info-box ul {
     margin-left: 20px;
-    color: #555;
+    color: #8b949e;
+    line-height: 1.8;
 }
 
 .info-box li {
-    margin-bottom: 5px;
+    margin-bottom: 6px;
 }
 
 .stats {
     display: flex;
     justify-content: space-around;
-    margin-top: 15px;
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 8px;
+    margin-top: 20px;
+    padding: 20px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    gap: 20px;
 }
 
 .stat-item {
     text-align: center;
+    flex: 1;
 }
 
 .stat-value {
-    font-size: 2em;
-    font-weight: bold;
-    color: #667eea;
+    font-size: 2.5em;
+    font-weight: 700;
+    color: #58a6ff;
+    line-height: 1;
 }
 
 .stat-label {
-    color: #666;
-    font-size: 0.9em;
-    margin-top: 5px;
+    color: #8b949e;
+    font-size: 0.85em;
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
 }
 
 .message {
-    padding: 12px;
-    margin-top: 15px;
-    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: 18px;
+    border-radius: 6px;
     display: none;
+    border: 1px solid transparent;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .message.success {
-    background: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
+    background: rgba(35, 134, 54, 0.15);
+    color: #3fb950;
+    border-color: rgba(35, 134, 54, 0.4);
 }
 
 .message.error {
-    background: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
+    background: rgba(248, 81, 73, 0.15);
+    color: #f85149;
+    border-color: rgba(248, 81, 73, 0.4);
 }
 
 .message.show {
@@ -191,20 +230,40 @@ button {
 }
 
 @media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
     .container {
-        padding: 20px;
+        padding: 24px;
     }
 
     h1 {
-        font-size: 1.5em;
+        font-size: 1.8em;
+    }
+
+    .subtitle {
+        font-size: 0.9em;
     }
 
     .button-group {
         flex-direction: column;
     }
 
+    button {
+        width: 100%;
+    }
+
     .stats {
         flex-direction: column;
-        gap: 15px;
+        gap: 20px;
+    }
+
+    label {
+        font-size: 0.85em;
+    }
+
+    textarea {
+        font-size: 12px;
     }
 }
