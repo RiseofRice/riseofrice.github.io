@@ -283,7 +283,7 @@ Mix and match any format!"></textarea>
             }
             
             // Pattern 2: Direct item IDs (numbers separated by commas, spaces, or newlines)
-            const numberPattern = /\b(\d{4,6})\b/g;
+            const numberPattern = /\b(\d+)\b/g;
             while ((match = numberPattern.exec(text)) !== null) {
                 itemIds.add(match[1]);
             }
@@ -300,7 +300,7 @@ Mix and match any format!"></textarea>
                 itemIds.add(match[1]);
             }
             
-            return Array.from(itemIds).sort((a, b) => a - b);
+            return Array.from(itemIds).sort((a, b) => Number(a) - Number(b));
         }
 
         function convertToTSM() {
@@ -315,8 +315,9 @@ Mix and match any format!"></textarea>
             }
             
             const itemIds = extractItemIds(input);
+            const uniqueCount = itemIds.length;
             
-            if (itemIds.length === 0) {
+            if (uniqueCount === 0) {
                 showMessage('No valid item IDs found in the input', 'error');
                 output.value = '';
                 itemCountEl.textContent = '0';
@@ -328,11 +329,11 @@ Mix and match any format!"></textarea>
             const tsmFormat = itemIds.map(id => `i:${id}`).join(',');
             output.value = tsmFormat;
             
-            // Update stats
-            itemCountEl.textContent = itemIds.length;
-            uniqueCountEl.textContent = itemIds.length;
+            // Update stats (both show unique count since duplicates are removed)
+            itemCountEl.textContent = uniqueCount;
+            uniqueCountEl.textContent = uniqueCount;
             
-            showMessage(`Successfully converted ${itemIds.length} item(s) to TSM format!`, 'success');
+            showMessage(`Successfully converted ${uniqueCount} item(s) to TSM format!`, 'success');
         }
 
         function copyToClipboard() {
@@ -343,6 +344,21 @@ Mix and match any format!"></textarea>
                 return;
             }
             
+            // Try modern Clipboard API first
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(output.value).then(() => {
+                    showMessage('Copied to clipboard! Ready to import in TSM.', 'success');
+                }).catch(() => {
+                    // Fallback to deprecated method for older browsers
+                    fallbackCopy(output);
+                });
+            } else {
+                // Fallback for browsers without Clipboard API
+                fallbackCopy(output);
+            }
+        }
+        
+        function fallbackCopy(output) {
             output.select();
             output.setSelectionRange(0, 99999); // For mobile devices
             
@@ -350,12 +366,7 @@ Mix and match any format!"></textarea>
                 document.execCommand('copy');
                 showMessage('Copied to clipboard! Ready to import in TSM.', 'success');
             } catch (err) {
-                // Fallback for modern browsers
-                navigator.clipboard.writeText(output.value).then(() => {
-                    showMessage('Copied to clipboard! Ready to import in TSM.', 'success');
-                }).catch(() => {
-                    showMessage('Failed to copy. Please copy manually.', 'error');
-                });
+                showMessage('Failed to copy. Please copy manually.', 'error');
             }
         }
 
