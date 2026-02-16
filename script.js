@@ -1,4 +1,5 @@
 function extractItemIds(text) {
+    // Returns a Set of item IDs found in the text
     const itemIds = new Set();
     
     // Pattern 1: Wowhead URLs with item IDs
@@ -90,6 +91,13 @@ function extractItemNames(text) {
     return itemNames;
 }
 
+function formatSearchLinks(failedSearches) {
+    // Helper function to format failed searches as HTML links
+    return failedSearches.map(item => 
+        `<a href="${item.searchUrl}" target="_blank" style="color: #58a6ff;">${item.name}</a>`
+    ).join(', ');
+}
+
 async function convertToTSM() {
     const input = document.getElementById('input').value;
     const output = document.getElementById('output');
@@ -129,9 +137,7 @@ async function convertToTSM() {
     const uniqueCount = sortedIds.length;
     
     if (uniqueCount === 0 && failedSearches.length > 0) {
-        const searchLinks = failedSearches.map(item => 
-            `<a href="${item.searchUrl}" target="_blank" style="color: #58a6ff;">${item.name}</a>`
-        ).join(', ');
+        const searchLinks = formatSearchLinks(failedSearches);
         showMessage(`Could not automatically find items. Try searching manually: ${searchLinks}. Note: Automatic search may be blocked by ad blockers or browser extensions.`, 'error', true);
         output.value = '';
         itemCountEl.textContent = '0';
@@ -157,9 +163,7 @@ async function convertToTSM() {
     
     let message = `Successfully converted ${uniqueCount} item(s) to TSM format!`;
     if (failedSearches.length > 0) {
-        const searchLinks = failedSearches.map(item => 
-            `<a href="${item.searchUrl}" target="_blank" style="color: #58a6ff;">${item.name}</a>`
-        ).join(', ');
+        const searchLinks = formatSearchLinks(failedSearches);
         message += ` Could not find: ${searchLinks}. (May be blocked by ad blocker)`;
         showMessage(message, 'info', true);
     } else {
