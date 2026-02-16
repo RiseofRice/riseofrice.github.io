@@ -37,7 +37,7 @@ async function searchWowheadForItemName(itemName) {
     
     // Try to use allorigins which is more reliable
     const proxy = 'https://api.allorigins.win/raw?url=';
-    const searchUrl = `https://www.wowhead.com/items/name:${encodeURIComponent(itemName)}`;
+    const searchUrl = `https://www.wowhead.com/items?filter=na=${encodeURIComponent(itemName)}`;
     
     try {
         const proxyUrl = proxy + encodeURIComponent(searchUrl);
@@ -59,7 +59,9 @@ async function searchWowheadForItemName(itemName) {
             try {
                 const data = JSON.parse(listviewMatch[1]);
                 if (data && data.length > 0 && data[0].id) {
-                    return { success: true, id: data[0].id.toString(), name: itemName };
+                    // Extract the actual item name from Wowhead if available
+                    const foundName = data[0].name_enus || data[0].name || itemName;
+                    return { success: true, id: data[0].id.toString(), searchedName: itemName, foundName: foundName };
                 }
             } catch (e) {
                 console.error('Failed to parse Wowhead data:', e);
@@ -69,7 +71,7 @@ async function searchWowheadForItemName(itemName) {
         // Fallback: try to find item IDs in the HTML directly
         const itemIdMatch = html.match(/\/item[=/](\d+)/);
         if (itemIdMatch) {
-            return { success: true, id: itemIdMatch[1], name: itemName };
+            return { success: true, id: itemIdMatch[1], searchedName: itemName, foundName: itemName };
         }
         
         return { success: false, name: itemName, error: 'No item found', searchUrl };
@@ -94,8 +96,15 @@ function extractItemNames(text) {
 function formatSearchLinks(failedSearches) {
     // Helper function to format failed searches as HTML links
     return failedSearches.map(item => 
-        `<a href="${item.searchUrl}" target="_blank" style="color: #58a6ff;">${item.name}</a>`
+        `<a href="${item.searchUrl}" target="_blank" style="color: #58a6ff;">${escapeHtml(item.name)}</a>`
     ).join(', ');
+}
+
+function escapeHtml(text) {
+    // Helper function to escape HTML special characters to prevent XSS
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 async function convertToTSM() {
@@ -116,6 +125,7 @@ async function convertToTSM() {
     const itemNames = extractItemNames(input);
     
     const failedSearches = [];
+    const foundItems = [];
     
     if (itemNames.length > 0) {
         showMessage(`Searching Wowhead for ${itemNames.length} item name(s)... This may take a moment.`, 'info');
@@ -124,6 +134,7 @@ async function convertToTSM() {
             const result = await searchWowheadForItemName(itemName);
             if (result.success) {
                 itemIds.add(result.id);
+                foundItems.push({ searchedName: result.searchedName, foundName: result.foundName, id: result.id });
                 console.log(`✓ Found ID ${result.id} for item: ${itemName}`);
             } else {
                 console.warn(`✗ Could not find ID for item: ${itemName}`);
@@ -162,10 +173,21 @@ async function convertToTSM() {
     uniqueCountEl.textContent = uniqueCount;
     
     let message = `Successfully converted ${uniqueCount} item(s) to TSM format!`;
+    
+    // Show found items as confirmation
+    if (foundItems.length > 0) {
+        const foundItemsList = foundItems.map(item => 
+            `<br>✓ Found: <strong>${escapeHtml(item.foundName)}</strong> (ID: ${escapeHtml(item.id)})`
+        ).join('');
+        message += foundItemsList;
+    }
+    
     if (failedSearches.length > 0) {
         const searchLinks = formatSearchLinks(failedSearches);
-        message += ` Could not find: ${searchLinks}. (May be blocked by ad blocker)`;
+        message += `<br>❌ Could not find: ${searchLinks}. (May be blocked by ad blocker)`;
         showMessage(message, 'info', true);
+    } else if (foundItems.length > 0) {
+        showMessage(message, 'success', true);
     } else {
         showMessage(message, 'success');
     }
