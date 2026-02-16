@@ -37,7 +37,7 @@ async function searchWowheadForItemName(itemName) {
     
     // Try to use allorigins which is more reliable
     const proxy = 'https://api.allorigins.win/raw?url=';
-    const searchUrl = `https://www.wowhead.com/items/name:${encodeURIComponent(itemName)}`;
+    const searchUrl = `https://www.wowhead.com/items?filter=na=${encodeURIComponent(itemName)}`;
     
     try {
         const proxyUrl = proxy + encodeURIComponent(searchUrl);
